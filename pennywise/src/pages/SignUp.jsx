@@ -1,7 +1,10 @@
 import React from 'react'
+import Header from '../components/Header/Index'
 
 export default function SignUp() {
   return (
-    <div>SignUp</div>
+    <div className='navbar'>
+      <Header />
+    </div>
   )
 }
