@@ -13,3 +13,11 @@
     font-size: 1.2rem;
    
 }
+
+.p-login{
+    text-align: center;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    font-weight: 300;
+    cursor: pointer;
+}
