@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import "./styles.css";
 
-export default function Input({ label, state, setState, placeholder }) {
-  // const [first, setfirst] = useState(second)
+export default function Input({ label, state, setState, placeholder, type }) {
+  
   return (
     <div className="input-wrapper">
       <p className="label-input">{label}</p>
       <input
-        // type="text"
+        type={type}
         placeholder={placeholder}
         className="custom-input"
         value={state}
