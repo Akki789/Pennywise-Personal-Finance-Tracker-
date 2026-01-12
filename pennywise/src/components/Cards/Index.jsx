@@ -3,7 +3,7 @@ import "./styles.css";
 import { Card, Row } from "antd";
 import Button from "../Button/Index";
 
-export default function Cards() {
+export default function Cards({ showExpenseModal, showIncomeModal }) {
   return (
     <div>
       <Row className="my-row">
@@ -16,13 +16,13 @@ export default function Cards() {
         <Card bordered={true} className="my-card">
           <h2>Total Income</h2>
           <p>₹1200000</p>
-          <Button text="Add Income" blue={true} />
+          <Button text="Add Income" blue={true} onClick={showIncomeModal}/>
         </Card>
 
         <Card bordered={true} className="my-card">
           <h2>Total Expenses</h2>
           <p>₹300000</p>
-          <Button text="Add Expenses" blue={true} />
+          <Button text="Add Expenses" blue={true} onClick={showExpenseModal} />
         </Card>
       </Row>
     </div>
