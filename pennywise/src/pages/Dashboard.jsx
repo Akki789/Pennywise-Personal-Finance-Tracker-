@@ -8,6 +8,7 @@ import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
+import TransactionsTable from "../components/TransactionsTable/TransactionsTable";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState([]);
@@ -145,6 +146,8 @@ useEffect(() => {
             handleIncomeCancel={handleIncomeCancel}
             onFinish={onFinish}
           />
+
+          <TransactionsTable transactions={transactions} />
         </>
       
       )}
