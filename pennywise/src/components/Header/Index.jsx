@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react'
-import './styles.css';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { auth } from '../../firebase';
-import { toast } from 'react-toastify';
-import { signOut } from 'firebase/auth';
+import React, { useEffect } from "react";
+import "./styles.css";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Navigate, useNavigate } from "react-router-dom";
+import { auth } from "../../firebase";
+import { toast } from "react-toastify";
+import { signOut } from "firebase/auth";
+import userImg from "../../assets/user.svg";
 
 export default function Header() {
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
-  useEffect(() =>{
-    if(!user){
-      navigate('/');
-    }else{
-      navigate('/dashboard');
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    } else {
+      navigate("/dashboard");
     }
-  }, [user, loading])
+  }, [user, loading]);
 
   function logoutfunc() {
     try {
@@ -36,10 +37,19 @@ export default function Header() {
   }
 
   return (
-    <div className='navbar'>
-      <p className='logo'>Pennywise</p>
-      {user && <p className='logo link' onClick={logoutfunc}>Logout</p>}
-      
+    <div className="navbar">
+      <p className="logo">Pennywise</p>
+      {user && (
+        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <img
+            src={user.photoURL ? user.photoURL : userImg}
+            style={{ borderRadius: "50%", height: "1.7rem", width: "1.7rem" }}
+          />
+          <p className="navbar-link" onClick={logoutfunc}>
+            Logout
+          </p>
+        </div>
+      )}
     </div>
-  )
+  );
 }
