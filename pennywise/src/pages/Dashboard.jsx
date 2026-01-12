@@ -147,7 +147,7 @@ useEffect(() => {
             onFinish={onFinish}
           />
 
-          <TransactionsTable transactions={transactions} />
+          <TransactionsTable transactions={transactions} addTransaction={addTransaction} fetchTransactions={fetchTransactions} />
         </>
       
       )}
