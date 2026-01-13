@@ -115,7 +115,7 @@ useEffect(() => {
       });
       setTransactions(transactionsArray);
       // console.log("Transactions Array", transactionsArray)
-      toast.success("Transactions Fetched!");
+      // toast.success("Transactions Fetched!");
     }
     setLoading(false);
   }
