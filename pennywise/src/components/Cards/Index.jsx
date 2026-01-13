@@ -46,6 +46,11 @@ export default function Cards({
         <Card bordered={true} className="my-card">
           <h2>Current Balance</h2>
           <p>₹{totalBalance}</p>
+          {totalBalance < 0 && (
+            <p className="minus-balance">
+              You're currently overspending. Try adjusting your expenses or adding more income.
+            </p>
+          )}
           <Button
             text="Reset Balance"
             blue={true}
