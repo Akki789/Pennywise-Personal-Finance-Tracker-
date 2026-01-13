@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/Header/Index";
 import Cards from "../components/Cards/Index";
 import AddExpense from "../components/Modals/AddExpense";
-import moment from "moment";
 import AddIncome from "../components/Modals/AddIncome";
 import { addDoc, collection, getDocs, query } from 'firebase/firestore';
 import { auth, db } from '../firebase';
@@ -140,6 +139,7 @@ useEffect(() => {
             expenses={expenses}
             showExpenseModal={showExpenseModal}
             showIncomeModal={showIncomeModal}
+            setTransactions={setTransactions}
           />
 
           {transactions.length !=0 ? <Charts sortedTransactions={sortedTransactions} /> : <NoTransactions />}

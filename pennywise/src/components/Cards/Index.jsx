@@ -2,6 +2,9 @@ import React from "react";
 import "./styles.css";
 import { Card, Row } from "antd";
 import Button from "../Button/Index";
+import { collection, getDocs, deleteDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase";
+import { toast } from "react-toastify";
 
 export default function Cards({
   income,
@@ -9,14 +12,38 @@ export default function Cards({
   totalBalance,
   showExpenseModal,
   showIncomeModal,
+  setTransactions,
 }) {
+
+  //reset balance function
+  async function resetBalance() {
+    try {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const uid = user.uid;
+
+      const txnRef = collection(db, "users", uid, "transactions");
+      const snapshot = await getDocs(txnRef);
+
+      const deletePromises = snapshot.docs.map((doc) => deleteDoc(doc.ref));
+      await Promise.all(deletePromises);
+      // for resetting local state after balance reset
+      setTransactions([]);
+
+      toast.success("All data reset successfully");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to reset balance");
+    }
+  }
   return (
     <div>
       <Row className="my-row">
         <Card bordered={true} className="my-card">
           <h2>Current Balance</h2>
           <p>₹{totalBalance}</p>
-          <Button text="Reset Balance" blue={true} />
+          <Button text="Reset Balance" blue={true} onClick={resetBalance} />
         </Card>
 
         <Card bordered={true} className="my-card">

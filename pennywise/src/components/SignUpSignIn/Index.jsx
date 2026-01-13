@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
-import { data, useNavigate } from 'react-router-dom';
-import './styles.css';
-import Input from '../Input/Index';
-import Button from '../Button/Index';
-import { toast } from 'react-toastify';
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword,signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { auth, db, provider } from '../../firebase';
+import React, { useState } from "react";
+import { data, useNavigate } from "react-router-dom";
+import "./styles.css";
+import Input from "../Input/Index";
+import Button from "../Button/Index";
+import { toast } from "react-toastify";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import { auth, db, provider } from "../../firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-
-
 
 export default function SignupSignin() {
   const [name, setName] = useState("");
@@ -33,7 +36,7 @@ export default function SignupSignin() {
       if (password == confirmPassword) {
         createUserWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
-            // Signed up 
+            // Signed up
             const user = userCredential.user;
             console.log("User...", user);
             toast.success("User Signed Up Successfully");
@@ -102,19 +105,19 @@ export default function SignupSignin() {
     const userData = await getDoc(userRef);
 
     if (!userData.exists()) {
-    try{
-         await setDoc(doc(db, "users", user.uid), {
-          name: user.displayName ?user.displayName : name,
+      try {
+        await setDoc(doc(db, "users", user.uid), {
+          name: user.displayName ? user.displayName : name,
           email: user.email,
           photoURL: user.photoURL ? user.photoURL : "",
           createdAt: new Date(),
-    });
-    toast.success("Doc Created!");
-    setLoading(false);
-    }catch(e){
-      toast.error(e.message);
-    }
-    }else{
+        });
+        toast.success("Doc Created!");
+        setLoading(false);
+      } catch (e) {
+        toast.error(e.message);
+      }
+    } else {
       // toast.error("Doc Already Exists!");
       setLoading(false);
     }
@@ -122,46 +125,44 @@ export default function SignupSignin() {
 
   function googleAuth() {
     setLoading(true);
-    try{
+    try {
       signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        console.log("user>>>", user);
-        createDoc(user);
-        setLoading(false);
-        navigate("/dashboard");
-        toast.success("User Authenticated successfully!");
-        // IdP data available using getAdditionalUserInfo(result)
-        // ...
-      })
-      .catch((error) => {
-        setLoading(false);
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        toast.error(errorMessage);
-  
-        // ...
-      });
-    }catch(e){
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          console.log("user>>>", user);
+          createDoc(user);
+          setLoading(false);
+          navigate("/dashboard");
+          toast.success("User Authenticated successfully!");
+          // IdP data available using getAdditionalUserInfo(result)
+          // ...
+        })
+        .catch((error) => {
+          setLoading(false);
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          toast.error(errorMessage);
+
+          // ...
+        });
+    } catch (e) {
       setLoading(false);
       toast.error(e.message);
     }
-
   }
   return (
     <>
       {loginForm ? (
         <div className="signup-wrapper">
           <h2 className="title">
-            Login on <span style={{ color: "var(--theme)" }}>FinTrackr.</span>
+            Login on <span style={{ color: "var(--theme)" }}>Pennywise</span>
           </h2>
           <form>
-           
             <Input
               type="email"
               label={"Email"}
@@ -176,25 +177,27 @@ export default function SignupSignin() {
               setState={setPassword}
               placeholder={"Example@123"}
             />
-         
+
             <Button
               disabled={loading}
               text={loading ? "Loading..." : "Login Using Email and Password"}
               onClick={loginUsingEmail}
             />
-            <p className='p-login'>or</p>
+            <p className="p-login">or</p>
             <Button
-            onClick={googleAuth}
+              onClick={googleAuth}
               text={loading ? "Loading..." : "Login Using Google"}
               blue={true}
             />
-            <p className='p-login' onClick={() => setLoginForm(!loginForm)}>Or Don't Have An Account? Click Here</p>
+            <p className="p-login" onClick={() => setLoginForm(!loginForm)}>
+              Or Don't Have An Account? Click Here
+            </p>
           </form>
         </div>
       ) : (
         <div className="signup-wrapper">
           <h2 className="title">
-            Sign Up on <span style={{ color: "var(--theme)" }}>FinTrackr.</span>
+            Sign Up on <span style={{ color: "var(--theme)" }}>Pennywise</span>
           </h2>
           <form>
             <Input
@@ -229,17 +232,18 @@ export default function SignupSignin() {
               text={loading ? "Loading..." : "Signup Using Email and Password"}
               onClick={signupWithEmail}
             />
-            <p className='p-login'>or</p>
+            <p className="p-login">or</p>
             <Button
               onClick={googleAuth}
               text={loading ? "Loading..." : "Signup Using Google"}
               blue={true}
             />
-            <p className='p-login' onClick={() => setLoginForm(!loginForm)}>Or Have An Account Already? Click Here</p>
+            <p className="p-login" onClick={() => setLoginForm(!loginForm)}>
+              Or Have An Account Already? Click Here
+            </p>
           </form>
         </div>
       )}
     </>
   );
 }
-

@@ -168,7 +168,7 @@ export default function TransactionsTable({ transactions, addTransaction, fetchT
             <button className="btn" onClick={exportCSV}>
               Export to CSV
             </button>
-            <label for="file-csv" className="btn btn-blue">
+            <label htmlFor="file-csv" className="btn btn-blue">
               Import from CSV
             </label>
             <input
