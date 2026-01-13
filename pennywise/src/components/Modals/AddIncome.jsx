@@ -1,5 +1,6 @@
 import React from "react";
-import {Button,Modal,Form,Input,DatePicker,Select,} from "antd";
+import { Button, Modal, Form, Input, DatePicker, Select } from "antd";
+import moment from "moment";
 
 export default function AddIncome({
   isIncomeModalVisible,
@@ -54,7 +55,7 @@ export default function AddIncome({
             { required: true, message: "Please select the income date!" },
           ]}
         >
-          <DatePicker format="YYYY-MM-DD" className="custom-input" />
+          <DatePicker format="YYYY-MM-DD" className="custom-input" disabledDate={(current) => current && current > moment().endOf("day")} />
         </Form.Item>
         <Form.Item
           style={{ fontWeight: 600 }}
@@ -78,4 +79,3 @@ export default function AddIncome({
     </Modal>
   );
 }
-

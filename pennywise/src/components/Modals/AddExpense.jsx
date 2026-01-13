@@ -1,5 +1,6 @@
 import React from "react";
 import {Button,Modal,Form,Input,DatePicker,Select,} from "antd";
+import moment from "moment";
 export default function AddExpense({
   isExpenseModalVisible,
   handleExpenseCancel,
@@ -54,7 +55,7 @@ export default function AddExpense({
             { required: true, message: "Please select the expense date!" },
           ]}
         >
-          <DatePicker className="custom-input" format="YYYY-MM-DD" />
+          <DatePicker className="custom-input" format="YYYY-MM-DD" disabledDate={(current) => current && current > moment().endOf("day")} />
         </Form.Item>
         <Form.Item
           label="Tag"
