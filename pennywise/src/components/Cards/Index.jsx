@@ -13,8 +13,8 @@ export default function Cards({
   showExpenseModal,
   showIncomeModal,
   setTransactions,
+  transactions,
 }) {
-
   //reset balance function
   async function resetBalance() {
     try {
@@ -30,7 +30,10 @@ export default function Cards({
       await Promise.all(deletePromises);
       // for resetting local state after balance reset
       setTransactions([]);
-
+      if (transactions.length === 0) {
+        toast.info("No transactions to delete");
+        return;
+      }
       toast.success("All data reset successfully");
     } catch (err) {
       console.error(err);
@@ -43,7 +46,12 @@ export default function Cards({
         <Card bordered={true} className="my-card">
           <h2>Current Balance</h2>
           <p>₹{totalBalance}</p>
-          <Button text="Reset Balance" blue={true} onClick={resetBalance} />
+          <Button
+            text="Reset Balance"
+            blue={true}
+            onClick={resetBalance}
+            disabled={transactions.length === 0}
+          />
         </Card>
 
         <Card bordered={true} className="my-card">

@@ -140,6 +140,7 @@ useEffect(() => {
             showExpenseModal={showExpenseModal}
             showIncomeModal={showIncomeModal}
             setTransactions={setTransactions}
+            transactions={transactions}
           />
 
           {transactions.length !=0 ? <Charts sortedTransactions={sortedTransactions} /> : <NoTransactions />}
