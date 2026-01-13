@@ -112,7 +112,7 @@ export default function SignupSignin() {
           photoURL: user.photoURL ? user.photoURL : "",
           createdAt: new Date(),
         });
-        toast.success("Doc Created!");
+        toast.success("Account Created!");
         setLoading(false);
       } catch (e) {
         toast.error(e.message);
