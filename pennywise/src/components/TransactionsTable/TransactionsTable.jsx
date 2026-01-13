@@ -96,6 +96,8 @@ export default function TransactionsTable({ transactions, addTransaction, fetchT
     }
   }
 
+  
+
   return (
     <div
       style={{

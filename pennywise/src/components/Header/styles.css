@@ -28,3 +28,16 @@
     opacity: 1;
    transition: all 0.3s;
 }
+
+.navbar-link {
+  color: #e3e3e3;
+  font-weight: 500;
+  margin: 0px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.navbar-link:hover {
+  color: white;
+  transition: all 0.3s;
+}

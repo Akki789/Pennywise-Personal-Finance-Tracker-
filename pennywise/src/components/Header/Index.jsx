@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./styles.css";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import { signOut } from "firebase/auth";
@@ -9,17 +9,17 @@ import userImg from "../../assets/user.svg";
 
 export default function Header() {
   const [user, loading] = useAuthState(auth);
-  const navigate = useNavigate();
+  const Navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
-      navigate("/");
+      Navigate("/");
     } else {
-      navigate("/dashboard");
+      Navigate("/dashboard");
     }
   }, [user, loading]);
 
-  function logoutfunc() {
+ function logoutfunc() {
     try {
       signOut(auth)
         .then(() => {
@@ -35,6 +35,7 @@ export default function Header() {
       toast.error(e.message);
     }
   }
+
 
   return (
     <div className="navbar">
