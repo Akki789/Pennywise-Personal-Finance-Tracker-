@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [user] = useAuthState(auth);
+  const [user, authLoading] = useAuthState(auth);
   const [isExpenseModalVisible, setIsExpenseModalVisible] = useState(false);
   const [isIncomeModalVisible, setIsIncomeModalVisible] = useState(false);
   const [income, setIncome] = useState(0);
@@ -26,10 +26,11 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!authLoading && !user) {
       navigate("/");
     }
-  }, [user, loading]);
+  }, [user, authLoading, navigate]);
+
   const showExpenseModal = () => {
     setIsExpenseModalVisible(true);
   };
