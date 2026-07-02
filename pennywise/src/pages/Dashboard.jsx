@@ -3,13 +3,14 @@ import Header from "../components/Header/Index";
 import Cards from "../components/Cards/Index";
 import AddExpense from "../components/Modals/AddExpense";
 import AddIncome from "../components/Modals/AddIncome";
-import { addDoc, collection, getDocs, query } from 'firebase/firestore';
-import { auth, db } from '../firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { toast } from 'react-toastify';
+import { addDoc, collection, getDocs, query } from "firebase/firestore";
+import { auth, db } from "../firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { toast } from "react-toastify";
 import TransactionsTable from "../components/TransactionsTable/TransactionsTable";
 import NoTransactions from "../components/NoTransactions";
 import Charts from "../components/Charts/Charts";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState([]);
@@ -20,9 +21,15 @@ export default function Dashboard() {
   const [income, setIncome] = useState(0);
   const [expenses, setExpenses] = useState(0);
   const [totalBalance, setTotalBalance] = useState(0);
-  
 
+  // const [user, loading] = useAuthState(auth);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/");
+    }
+  }, [user, loading]);
   const showExpenseModal = () => {
     setIsExpenseModalVisible(true);
   };
@@ -38,12 +45,11 @@ export default function Dashboard() {
   const handleIncomeCancel = () => {
     setIsIncomeModalVisible(false);
   };
-  
- 
+
   const onFinish = (values, type) => {
     const newTransaction = {
       type: type,
-      date: (values.date).format("YYYY-MM-DD"),
+      date: values.date.format("YYYY-MM-DD"),
       amount: parseFloat(values.amount),
       tag: values.tag,
       name: values.name,
@@ -53,14 +59,13 @@ export default function Dashboard() {
 
     setIsExpenseModalVisible(false);
     setIsIncomeModalVisible(false);
-
   };
 
- async function addTransaction(transaction, many) {
+  async function addTransaction(transaction, many) {
     try {
       const docRef = await addDoc(
         collection(db, `users/${user.uid}/transactions`),
-        transaction
+        transaction,
       );
       console.log("Document written with ID: ", docRef.id);
       if (!many) toast.success("Transaction Added!");
@@ -71,17 +76,15 @@ export default function Dashboard() {
     } catch (e) {
       console.error("Error adding document: ", e);
       if (!many) toast.error("Couldn't add transaction");
-      
     }
   }
 
-useEffect(() => {
-  // Get all docs from a collection
-  if (user) fetchTransactions();
-}, [user]);
+  useEffect(() => {
+    // Get all docs from a collection
+    if (user) fetchTransactions();
+  }, [user]);
 
-
-  function calculateBalance(){
+  function calculateBalance() {
     let incomeTotal = 0;
     let expensesTotal = 0;
 
@@ -121,9 +124,8 @@ useEffect(() => {
   }
 
   let sortedTransactions = transactions.sort((a, b) => {
-      return new Date(a.date) - new Date(b.date);
-  })
-
+    return new Date(a.date) - new Date(b.date);
+  });
 
   return (
     <div>
@@ -143,7 +145,11 @@ useEffect(() => {
             transactions={transactions}
           />
 
-          {transactions.length !=0 ? <Charts sortedTransactions={sortedTransactions} /> : <NoTransactions />}
+          {transactions.length != 0 ? (
+            <Charts sortedTransactions={sortedTransactions} />
+          ) : (
+            <NoTransactions />
+          )}
 
           <AddExpense
             isExpenseModalVisible={isExpenseModalVisible}
@@ -157,9 +163,12 @@ useEffect(() => {
             onFinish={onFinish}
           />
 
-          <TransactionsTable transactions={transactions} addTransaction={addTransaction} fetchTransactions={fetchTransactions} />
+          <TransactionsTable
+            transactions={transactions}
+            addTransaction={addTransaction}
+            fetchTransactions={fetchTransactions}
+          />
         </>
-      
       )}
     </div>
   );

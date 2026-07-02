@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./styles.css";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -8,16 +8,8 @@ import { signOut } from "firebase/auth";
 import userImg from "../../assets/user.svg";
 
 export default function Header() {
-  const [user, loading] = useAuthState(auth);
-  const Navigate = useNavigate();
-
-  useEffect(() => {
-    if (!user) {
-      Navigate("/");
-    } else {
-      Navigate("/dashboard");
-    }
-  }, [user, loading]);
+  const [user] = useAuthState(auth);
+  const navigate = useNavigate();
 
  function logoutfunc() {
     try {
@@ -25,7 +17,7 @@ export default function Header() {
         .then(() => {
           // Sign-out successful.
           toast.success("Logged Out Successfully!");
-          Navigate("/");
+          navigate("/");
         })
         .catch((error) => {
           // An error happened.
